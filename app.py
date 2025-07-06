@@ -19,9 +19,9 @@ CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 SCOPES = os.getenv("SCOPES")
 
 app = Flask(__name__)
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "default_dev_secret")  # use env var
 
-app.secret_key = 'first-time-using-google-colab'  # 🔐 Use a stronger secret in production
-client = openai.OpenAI(api_key=openai_keyss)
+
 
 
 # Enable OAuth for local development
@@ -31,6 +31,7 @@ REDIRECT_URI = "http://localhost:5000/oauth2callback"
 
 def summarize_text(text):
     try:
+        client = openai.OpenAI(api_key=openai_keyss)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",  
             messages=[
